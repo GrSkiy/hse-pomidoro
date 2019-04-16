@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru" dir="ltr">
+<head>
+  <title>Успеватофф</title>
+  <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8">
+</head>
+<body>
+  <nav>
+    <img src="img/logo.svg" alt="Логотип">
+    <ul>
+      <li>
+        <a id="timer" href="#timer-section">
+          Таймер
+        </a>
+      </li>
+      <li>
+        <a class="stats" href="#stats-section">Статистика</a>
+      </li>
+    </ul>
+  </nav>
+  <main>
+    <section id="timer-section">
+      <form>
+        <label for="task">
+          Чем планируете заниматься
+        </label>
+        <input
+          type="text"
+          name="task"
+          placeholder="Например, хочу написать первый пункт плана по захвату мира"
+        >
+        <label>
+          Сколько хотите потратить времени
+        </label>
+        <div class="switcher">
+          <a class="switch is-left is-active" href="#">25 минут</a>
+          <a class="switch is-right" href="#">5 минут</a>
+        </div>
+        <input class="button" type="submit" value="Запустить">
+      </form>
+    </section>
+    <section id="stats-section">
+      <label>
+        Завершенные задачи
+      </label>
+      <div class="heading-block">
+        <h2>Дата</h2>
+        <h2>Таймер</h2>
+        <h2>Задача</h2>
+      </div>
+      <ul class="table">
+        <li>
+          <ul class="list">
+            <li>13 апреля</li>
+            <li>25 мин</li>
+            <li>Первая версия</li>
+            <li class="cross"></li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+    <section id="progress-section">
+    </section>
+    <footer>
+      <img id="timer-img" src="img/timer-section.svg" alt="Картинка секции">
+    </footer>
+  </main>
+  <script src="scripts.js"></script>
+</body>
+</html>
