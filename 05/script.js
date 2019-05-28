@@ -38,7 +38,7 @@ button.onclick = function() {
   // secondTh.textContent = inputSurname.value
   // thirdTh.textContent = inputAge.value
   // fourthTh.textContent = inputInterest.value
-  // fifthTh.textContent = inputProfession.value
+  // fifthTh.textContent = inputProfession.value  
 
   const newTr = document.createElement('tr')
 
