@@ -1,52 +1,102 @@
 const form = document.querySelector('form')
 const switchTo25 = document.querySelector('.switch.is-left')
 const switchTo5 = document.querySelector('.switch.is-right')
-const switchToStats = document.querySelector('.stats')
-const switchToTimer = document.querySelector('#timer')
-const main = document.getElementById('timer-section')
-const img = document.getElementById('timer-img')
-
 let taskTime = 5000
+const timerLink = document.querySelector('#timer-link')
+const statsLink = document.querySelector('#stats-link')
+const timerSection = document.querySelector('#timer-section')
+const statsSection = document.querySelector('#stats-section')
 
 switchTo25.onclick = function handleTimeSwitch() {
-  if (switchTo25.classList.contains('is-active')) {
-    return
-  }
-  switchTo25.classList.toggle('is-active')
-  switchTo5.classList.toggle('is-active')
+  switchTo25.classList.add('is-active')
+  switchTo5.classList.remove('is-active')
   taskTime = 5000
 }
 
 switchTo5.onclick = function handleTimeSwitch() {
-  if (switchTo5.classList.contains('is-active')) {
-    return
-  }
-  switchTo5.classList.toggle('is-active')
-  switchTo25.classList.toggle('is-active')
+  switchTo5.classList.add('is-active')
+  switchTo25.classList.remove('is-active')
   taskTime = 1000
+}
+
+timerLink.onclick = function () {
+  statsSection.style.display = 'none'
+  timerSection.style.display = 'block'
+  timerLink.classList.add('is-active')
+  statsLink.classList.remove('is-active')
+}
+
+statsLink.onclick = function () {
+  timerSection.style.display = 'none'
+  statsSection.style.display = 'block'
+  statsLink.classList.add('is-active')
+  timerLink.classList.remove('is-active')
+
+  const historySize = localStorage.length
+
+  if (historySize > 0) {
+    for (let i = 0; i < historySize; i++) {
+      const key = localStorage.key(i)
+
+      const task = JSON .parse(localStorage.getItem(key))
+
+      const tr = document.createElement('tr')
+
+      // Как сделать из строки число:
+      //   1. Number(key)
+      //   2. parseInt(key)
+      //   3. +key
+
+      const taskDate = new Date(+key).getDate()
+      const taskMonth = new Date(+key).getMonth()
+
+      const tdDate = document.createElement('td')
+      tdDate.innerText = taskDate + '/' + taskMonth
+
+      const tdTime = document.createElement('td')
+      tdTime.innerText = task.time
+
+      const tdTask = document.createElement('td')
+      tdTask.innerText = task.name
+
+      const tdRemove = document.createElement('td')
+      // [tdDate, tdTime, tdTask, tdRemove]
+      //   .forEach(el => tr.appendChild(el))
+      tr.appendChild(tdDate)
+      tr.appendChild(tdTime)
+      tr.appendChild(tdTask)
+      tr.appendChild(tdRemove)
+
+      const tbody = document.querySelector('tbody')
+      tbody.appendChild(tr)
+    }
+  }
 }
 
 form.onsubmit = function startTimer(e) {
   e.preventDefault()
 
   const input = e.target.querySelector('input[type=text]')
+  // Date.now() возвращает количество миллисекунд с 1970 года, читайте подробнее в http://learn.javascript.ru/datetime
+  // Мы используем количество времени для ключа, чтобы избежать проблемы двух одинаковых записей
+  const key = Date.now()
+  // Создаем объект с названием и временем задачи
+  const task = {
+    name: input.value,
+    time: taskTime
+  }
+  // Сохраняем объект в память браузера, но предварительно переводим объект в строку — в памяти браузера можно хратить только строки
+  localStorage.setItem(key, JSON.stringify(task))
 
   setTimeout(function () {
-    console.log(input.value)
+    input.value = ''
   }, taskTime)
 }
 
-switchToStats.onclick = function mainPageSwitch() {
-
-  main.style.display = "none"
-  img.src = "img/stats-section.svg"
-  switchToStats.style.borderBottom = "none"
-  switchToTimer.style.borderBottom = "1px solid rgba(229, 100, 92, 0.5)"
+if (window.location.hash === '#timer-section') {
+  timerLink.click()
 }
 
-switchToTimer.onclick = function statsPageSwitch() {
-  main.style.display = "block"
-  img.src = "img/timer-section.svg"
-  switchToStats.style.borderBottom = "1px solid rgba(229, 100, 92, 0.5)"
-  switchToTimer.style.borderBottom = "none"
+if (window.location.hash === '#stats-section') {
+  statsLink.click()
 }
